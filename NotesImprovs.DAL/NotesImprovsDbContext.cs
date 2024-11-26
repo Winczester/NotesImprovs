@@ -1,9 +1,37 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using NotesImprovs.DAL.Models;
 using NotesImprovs.DAL.Models.Identity;
 
 namespace NotesImprovs.DAL;
+
+public class NotesImprovsDbContextFactory : IDesignTimeDbContextFactory<NotesImprovsDbContext>
+{
+
+    private readonly IConfiguration _configuration;
+
+    public NotesImprovsDbContextFactory()
+    {
+        
+    }
+    
+    public NotesImprovsDbContextFactory(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    public NotesImprovsDbContext CreateDbContext(string[] args)
+    {
+        var connectionString = _configuration.GetConnectionString("PostgreSQL");
+        var optionsBuilder = new DbContextOptionsBuilder<NotesImprovsDbContext>();
+        optionsBuilder.UseNpgsql(connectionString,
+            b => b.MigrationsAssembly("NotesImprovs.DAL"));
+        
+        return new NotesImprovsDbContext(optionsBuilder.Options);
+    }
+}
 
 public class NotesImprovsDbContext : IdentityDbContext<AppUser, AppRole, Guid, AppUserClaim,  AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>
 {

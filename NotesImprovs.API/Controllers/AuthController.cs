@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var user = new AppUser() { UserName = model.UserName, Email = model.Email };
+        var user = new AppUser() { UserName = model.UserName, Email = model.Email, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow};
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
@@ -56,7 +56,7 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid login attempt.");
         }
 
-        var result = await _signInManager.PasswordSignInAsync(user, model.Password, isPersistent: false, lockoutOnFailure: false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
         if (!result.Succeeded)
         {
             return Unauthorized("Invalid login attempt.");
