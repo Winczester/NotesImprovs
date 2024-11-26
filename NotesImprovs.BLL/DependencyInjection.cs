@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddTransient<INotesManager, NotesManager>();
         services.AddScoped<TokenService>();
         services.AddScoped<AuthRedisService>();
+        services.AddScoped<NotesRedisService>();
         
         return services;
     }

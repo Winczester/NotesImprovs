@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NotesImprovs.API.Middlewares;
 using NotesImprovs.BLL;
 using NotesImprovs.BLL.Interfaces;
 using NotesImprovs.BLL.Managers;
@@ -112,6 +113,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandlingMiddleware();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

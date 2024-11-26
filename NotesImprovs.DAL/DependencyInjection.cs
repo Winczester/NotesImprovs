@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using NotesImprovs.DAL.Interfaces;
 using NotesImprovs.DAL.Models;
+using NotesImprovs.DAL.Repositories;
 
 namespace NotesImprovs.DAL;
 
@@ -28,6 +30,8 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<NotesImprovsDbContext>()
             .AddDefaultTokenProviders()
             .AddSignInManager<SignInManager<AppUser>>();
+
+        services.AddTransient<INoteRepository, NoteRepository>();
         
         return services;
     }
