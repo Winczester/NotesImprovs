@@ -44,28 +44,35 @@ public class NotesManager : INotesManager
         return notes.Select(n => n.ToNoteViewModel()).ToList();
     }
 
-    public async Task<NoteViewModel> UpdateNote(Guid noteId, BaseNoteViewModel updateData)
+    public async Task<NoteViewModel> UpdateNote(Guid noteId, Guid userId, BaseNoteViewModel updateData)
     {
         var noteToUpdate = await _noteRepository.GetNoteByIdAsync(noteId);
-        if (noteToUpdate == null)
-        {
-            throw new Exception("Note has not been found!");
-        }
+        _validateBeforeAction(noteToUpdate, userId);
         noteToUpdate.UpdateNoteData(updateData);
         await _noteRepository.UpdateNoteAsync(noteToUpdate);
         await _redisCacheService.InvalidateNotesCacheAsync(noteToUpdate.UserId.ToString()); // Invalidate cache after update
         return noteToUpdate.ToNoteViewModel();
     }
 
-    public async Task<bool> DeleteNote(Guid noteId)
+    public async Task<bool> DeleteNote(Guid noteId, Guid userId)
     {
         var noteToDelete = await _noteRepository.GetNoteByIdAsync(noteId);
-        if (noteToDelete == null)
-        {
-            throw new Exception("Note has not been found!");
-        }
+        _validateBeforeAction(noteToDelete, userId);
         await _noteRepository.DeleteNoteAsync(noteId);
         await _redisCacheService.InvalidateNotesCacheAsync(noteToDelete.UserId.ToString()); // Invalidate cache after deletion
         return true;
+    }
+
+    private void _validateBeforeAction(Note note, Guid userId)
+    {
+        if (note == null)
+        {
+            throw new Exception("Note has not been found!");
+        }
+
+        if (note.UserId != userId)
+        {
+            throw new Exception("This note does not belongs to you! You can`t perform actions with it");
+        }
     }
 }

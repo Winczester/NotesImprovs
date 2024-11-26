@@ -42,13 +42,15 @@ public class NotesController : ControllerBase
     [HttpPut("{noteId:guid}")]
     public async Task<NoteViewModel> UpdateNote([FromRoute] Guid noteId, [FromBody]BaseNoteViewModel updateData)
     {
-        return await _notesManager.UpdateNote(noteId, updateData);
+        var userId = _userManager.GetUserId(HttpContext.User);
+        return await _notesManager.UpdateNote(noteId, Guid.Parse(userId), updateData);
     }
 
     [Authorize]
     [HttpDelete("{noteId:guid}")]
     public async Task<bool> DeleteNote([FromRoute] Guid noteId)
     {
-        return await _notesManager.DeleteNote(noteId);
+        var userId = _userManager.GetUserId(HttpContext.User);
+        return await _notesManager.DeleteNote(noteId, Guid.Parse(userId));
     }
 }
