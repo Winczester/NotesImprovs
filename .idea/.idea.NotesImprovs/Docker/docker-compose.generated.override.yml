@@ -1,0 +1,20 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  app:
+    build:
+      context: "/Users/dmytrokurnitskiy/RiderProjects/NotesImprovs"
+      dockerfile: "NotesImprovs.API/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/NotesImprovs.API.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "notesimprovs.api:dev"
+    ports: []
+    volumes:
+    - "/Users/dmytrokurnitskiy/.nuget/packages:/home/app/.nuget/packages"
+    - "/Users/dmytrokurnitskiy/RiderProjects/NotesImprovs/NotesImprovs.API:/app:rw"
+    - "/Users/dmytrokurnitskiy/RiderProjects/NotesImprovs:/src:rw"
+    working_dir: "/app"
