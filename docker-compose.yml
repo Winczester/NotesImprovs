@@ -1,0 +1,6 @@
+﻿services:
+  notesimprovs.api:
+    image: notesimprovs.api
+    build:
+      context: .
+      dockerfile: NotesImprovs.API/Dockerfile
