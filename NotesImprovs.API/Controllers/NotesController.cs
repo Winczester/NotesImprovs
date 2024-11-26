@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotesImprovs.BLL.Interfaces;
@@ -21,6 +22,7 @@ public class NotesController : ControllerBase
         _notesManager = notesManager;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<List<NoteViewModel>> GetNotes()
     {
@@ -28,19 +30,22 @@ public class NotesController : ControllerBase
         return await _notesManager.GetNotes(Guid.Parse(userId));
     }
 
+    [Authorize]
     [HttpPost]
-    public async Task<NoteViewModel> CreateNote([FromBody] NoteViewModel note)
+    public async Task<NoteViewModel> CreateNote([FromBody] BaseNoteViewModel note)
     {
         var userId = _userManager.GetUserId(HttpContext.User);
         return await _notesManager.CreateNote(Guid.Parse(userId), note);
     }
 
+    [Authorize]
     [HttpPut("{noteId:guid}")]
     public async Task<NoteViewModel> UpdateNote([FromRoute] Guid noteId, [FromBody]BaseNoteViewModel updateData)
     {
         return await _notesManager.UpdateNote(noteId, updateData);
     }
 
+    [Authorize]
     [HttpDelete("{noteId:guid}")]
     public async Task<bool> DeleteNote([FromRoute] Guid noteId)
     {

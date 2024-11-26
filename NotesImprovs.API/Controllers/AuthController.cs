@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotesImprovs.BLL.Services;
@@ -74,6 +75,7 @@ public class AuthController : ControllerBase
         });
     }
     
+    [Authorize]
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenViewModel model)
     {

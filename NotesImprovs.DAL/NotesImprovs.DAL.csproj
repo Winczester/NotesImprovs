@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\" />
+      <ProjectReference Include="..\NotesImprovs.Models\NotesImprovs.Models.csproj" />
     </ItemGroup>
 
 </Project>
