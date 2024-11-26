@@ -1,5 +1,7 @@
 README
+
 NotesImprovs
+
 Overview
 This is an ASP.NET Core Web API project that uses:
 	•	PostgreSQL as the database.
@@ -7,11 +9,14 @@ This is an ASP.NET Core Web API project that uses:
 	•	Docker Compose to orchestrate the multi-container setup.
 	•	Entity Framework Core for data access with automated migrations.
 	•	JWT authentication for secure API access.
+ 
 Prerequisites
 Before you begin, ensure you have the following installed:
 	•	Docker (v20.10+ recommended)
 	•	Docker Compose (v2.0+ recommended)
+ 
 Getting Started
+
 Running the Application with Docker
 Clone the repository: git clone https://github.com/Winczester/NotesImprovs.git
 cd your-repository
