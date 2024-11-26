@@ -1,6 +1,51 @@
 ﻿services:
-  notesimprovs.api:
-    image: notesimprovs.api
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpass
+      POSTGRES_DB: NotesTestDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  # Redis Cache Service
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+
+  # ASP.NET Core Project Service
+  app:
+    image: notesimprovs.api:latest
     build:
       context: .
       dockerfile: NotesImprovs.API/Dockerfile
+    container_name: project_app
+    depends_on:
+      - db
+      - redis
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgreSQL: "Host=db;Database=NotesTestDb;Username=postgres;Password=secretpass"
+      ConnectionStrings__Redis: "redis_cache:6379,abortConnect=false"
+      JwtSettings__Secret: "fsdfw'eklfhkl4j;fjkfb4j4kjb4kjbfkjb4jkb4sse"
+      JwtSettings__Issuer: "NotesImprovs"
+      JwtSettings__Audience: "https://localhost:7194"
+    ports:
+      - "5050:8080" # Expose your app on port 5000
+    networks:
+      - backend_network
+
+# Volumes for persistent storage
+volumes:
+  db_data:
+
+# Shared network for inter-container communication
+networks:
+  backend_network:
