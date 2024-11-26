@@ -18,7 +18,10 @@
   redis:
     image: redis:latest
     container_name: redis_cache
-    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_network
 
   # ASP.NET Core Project Service
   app:
@@ -33,7 +36,7 @@
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__PostgreSQL: "Host=db;Database=NotesTestDb;Username=postgres;Password=secretpass"
-      ConnectionStrings__Redis: "redis_cache:6379,abortConnect=false"
+      ConnectionStrings__Redis: "redis:6379,abortConnect=false"
       JwtSettings__Secret: "fsdfw'eklfhkl4j;fjkfb4j4kjb4kjbfkjb4jkb4sse"
       JwtSettings__Issuer: "NotesImprovs"
       JwtSettings__Audience: "https://localhost:7194"
