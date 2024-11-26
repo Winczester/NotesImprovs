@@ -36,23 +36,31 @@ docker-compose down
 Accessing Swagger UI
 	•	Swagger URL: http://localhost:5000/swagger
 	•	This page provides a web interface to explore and interact with the API endpoints.
+
+ 
 Authenticating in Swagger
 To interact with secure endpoints in Swagger, you need to authenticate using a JWT token. Follow these steps:
-Register a User: Use the /api/auth/register endpoint in Swagger to register a new user. You'll need to provide:  {
+
+Register a User: Use the /api/auth/register endpoint in Swagger to register a new user. You'll need to provide:  
+{
   "email": “your email,
   "password": "your password”,
   "userName": "your username”
 }
 
-Log in to Get a JWT Token: Use the /api/auth/login endpoint to log in with your registered credentials. This will return a JSON response containing an accessToken and a refreshToken:  {
+Log in to Get a JWT Token: Use the /api/auth/login endpoint to log in with your registered credentials. This will return a JSON response containing an accessToken and a refreshToken: 
+{
   "accessToken": "your_jwt_access_token",
   "refreshToken": "your_jwt_refresh_token"
 } 
+
 Authorize in Swagger:
 Copy the accessToken value.
 Click the Authorize button (a padlock icon) in the top-right corner of the Swagger UI.
 Enter {your_jwt_access_token} in the authorization dialog (replace {your_jwt_access_token} with the actual token value). Example: 
+
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... 
+
 Using the API: After authorization, you can interact with the secure API endpoints. The authorization will be valid for the duration of the token's lifetime.
 
 
